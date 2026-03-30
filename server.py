@@ -6,6 +6,11 @@ import uvicorn
 app = FastAPI(title="SentinelEnv API")
 env = SentinelEnv()
 
+@app.get("/")
+def root():
+    """Root endpoint for Hugging Face Spaces."""
+    return {"message": "SentinelEnv API is running. Check /docs for API documentation."}
+
 @app.get("/health")
 def health_check():
     """Hugging Face Space health check endpoint."""
