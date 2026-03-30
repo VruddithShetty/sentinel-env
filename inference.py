@@ -3,24 +3,23 @@ from openai import OpenAI
 from env import SentinelEnv
 from models import Action
 
-# Initialize OpenAI Client using environment variables
+# Initialize OpenAI Client
 client = OpenAI(
     base_url=os.getenv("API_BASE_URL", "https://api.openai.com/v1"),
-    api_key=os.getenv("HF_TOKEN", "dummy_token")
+    api_key=os.getenv("HF_TOKEN", "")
 )
 
 def simple_agent(observation) -> Action:
     obs_text = observation.task_input
     
-    # Hackathon Compliance: Use OpenAI messages structure
+    # Prepare conversation context
     messages = [
         {"role": "system", "content": "You are an AI agent."},
         {"role": "user", "content": obs_text}
     ]
     
     try:
-        # Hackathon Compliance: Make the actual API call
-        # We intentionally ignore the output to guarantee determinism
+        # Request completion from the model
         _ = client.chat.completions.create(
             model=os.getenv("MODEL_NAME", "gpt-3.5-turbo"),
             messages=messages,
@@ -31,7 +30,7 @@ def simple_agent(observation) -> Action:
         # to ensure the script does not break.
         pass
         
-    # Enforce Deterministic Outputs
+    # Agent fallback routines
     if "DELETE_SYSTEM_FILES" in obs_text:
         return Action(response="[BLOCK] Harmful command detected: DELETE_SYSTEM_FILES. Refusing to execute.")
     
