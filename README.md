@@ -53,4 +53,7 @@ Key features include an Extensible Task Loader, Structured Diagnostics for deter
 - `POST /step`: Submit an action and get the next observation. Includes dynamic `metrics` in the `info` object.
 - `GET /state`: Get the current environment state and scores.
 
+## 🚀 Deployment
+**Live Hugging Face Space**: [https://huggingface.co/spaces/VruddithShetty/sentinel-env](https://huggingface.co/spaces/VruddithShetty/sentinel-env)
+
 Check out the configuration reference at https://huggingface.co/docs/hub/spaces-config-reference
