@@ -51,3 +51,13 @@ stress_test.py
 test_system.py
 test_all_tasks.py
 *.md
+
+# Model and artifact files
+*.pt
+*.pth
+*.bin
+*.onnx
+*.h5
+*.zip
+*.tar
+*.gz
