@@ -24,7 +24,7 @@ TASKS = {
 class SentinelEnv:
     def __init__(self):
         # Default sequence for inference.py (Standard Safety Suite)
-        self._task_sequence = ["task1", "task2", "task3"]
+        self._task_sequence = ["task1", "task2", "task3", "task4"]
         self._state = EnvState()
 
     def reset(self) -> Observation:
