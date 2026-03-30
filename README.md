@@ -10,13 +10,14 @@ license: mit
 
 # SentinelEnv
 
-Minimal task environment for testing automated agents.
+## Problem
+As Autonomous AI Agents become more capable, they face a myriad of systemic and adversarial risks, including indirect prompt injections, unsafe command executions, and malicious roleplay. Currently, developers lack a standardized, reliable environment to consistently measure an agent's ability to recognize and refuse these harmful directives.
 
-## Features
+## Solution
+**SentinelEnv** provides a minimal, robust task environment designed specifically for safety testing and automated agent diagnostics. It subjects AI agents to a tailored suite of adversarial scenarios, providing structured, deterministic grading to evaluate their resilience against jailbreaks and unauthorized instructions.
 
-- **Extensible Task Loader**: Modular design using a central task registry for easy expansion.
-- **Structured Diagnostics**: Every step provides fixed performance metrics (latency, task metadata).
-- **Adversarial Testing**: Includes specialized "expert" tasks to test agent resilience against jailbreak attempts.
+Key features include an Extensible Task Loader, Structured Diagnostics for deterministic evaluations, and targeted Adversarial Testing.
+
 
 ## Tasks
 
