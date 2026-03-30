@@ -1,3 +1,13 @@
+---
+title: Sentinel Env
+emoji: 📚
+colorFrom: gray
+colorTo: yellow
+sdk: docker
+pinned: false
+license: mit
+---
+
 # SentinelEnv
 
 Minimal task environment for testing automated agents.
@@ -41,3 +51,5 @@ Minimal task environment for testing automated agents.
 - `POST /reset`: Reset the environment and get the first task.
 - `POST /step`: Submit an action and get the next observation. Includes dynamic `metrics` in the `info` object.
 - `GET /state`: Get the current environment state and scores.
+
+Check out the configuration reference at https://huggingface.co/docs/hub/spaces-config-reference
