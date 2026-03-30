@@ -1,0 +1,17 @@
+name: SentinelEnv
+version: 1.1.0
+description: "Minimal task environment with adversarial testing support"
+entry_point: env:SentinelEnv
+tasks:
+  - id: task1
+    name: "Phrase Detection"
+    complexity: "easy"
+  - id: task2
+    name: "Log Anomaly Detection"
+    complexity: "medium"
+  - id: task3
+    name: "Authority Pressure Refusal"
+    complexity: "hard"
+  - id: task4
+    name: "Adversarial Roleplay Refusal"
+    complexity: "expert"

@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+*$py.class
+.git/
+.env
+.venv/
+env/
+venv/
+*.log
+output.txt
+final_output.txt
+stress_test.py
+test_system.py
+test_all_tasks.py
+*.md
