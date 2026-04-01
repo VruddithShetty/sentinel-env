@@ -16,9 +16,15 @@ def health_check():
     """Hugging Face Space health check endpoint."""
     return {"status": "ok"}
 
-@app.post("/reset", response_model=Observation)
-def reset():
-    return env.reset()
+@app.post("/reset")
+def reset(opts: dict = None):
+    seed = opts.get("seed") if opts else None
+    options = opts.get("options") if opts else None
+    obs, info = env.reset(seed=seed, options=options)
+    return {
+        "observation": obs,
+        "info": info
+    }
 
 @app.post("/step")
 def step(action: Action):

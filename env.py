@@ -27,9 +27,18 @@ class SentinelEnv:
         self._task_sequence = ["task1", "task2", "task3", "task4"]
         self._state = EnvState()
 
-    def reset(self) -> Observation:
+    def reset(self, seed: int = None, options: dict = None) -> Tuple[Observation, Dict[str, Any]]:
         self._state = EnvState()
-        return self._get_observation()
+        current_task_id = self._task_sequence[self._state.current_task_index]
+        info = {
+            "metrics": {
+                "latency": 0.1,
+                "task_id": current_task_id,
+                "status": "ready"
+            },
+            "error": None
+        }
+        return self._get_observation(), info
 
     def step(self, action: Action) -> Tuple[Observation, float, bool, Dict[str, Any]]:
         # Case: Episode already completed
