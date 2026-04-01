@@ -7,13 +7,17 @@ name = "sentinel-env"
 version = "1.1.0"
 description = "Minimal task environment with adversarial testing support"
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 dependencies = [
     "fastapi",
     "uvicorn",
     "pydantic",
-    "openai"
+    "openai",
+    "openenv-core>=0.2.0"
 ]
+
+[project.scripts]
+server = "server.app:main"
 
 [project.optional-dependencies]
 test = [
@@ -21,8 +25,8 @@ test = [
 ]
 
 [tool.setuptools]
-py-modules = ["env", "inference", "models", "server", "test_api"]
-packages = ["graders", "scenarios"]
+py-modules = ["env", "inference", "models", "test_api"]
+packages = ["graders", "scenarios", "server"]
 
 [tool.setuptools.package-data]
 "*" = ["openenv.yaml", "README.md", "Dockerfile"]
