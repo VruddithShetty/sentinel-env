@@ -47,7 +47,7 @@ def simple_agent(observation) -> Action:
 
 def run_inference():
     env = SentinelEnv()
-    obs = env.reset()
+    obs, info = env.reset()
     done = False
     
     print("--- SentinelEnv Inference Started ---\n")
