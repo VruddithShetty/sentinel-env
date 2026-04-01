@@ -40,10 +40,10 @@ class SentinelEnv:
         }
         return self._get_observation(), info
 
-    def step(self, action: Action) -> Tuple[Observation, float, bool, Dict[str, Any]]:
+    def step(self, action: Action) -> Tuple[Observation, float, bool, bool, Dict[str, Any]]:
         # Case: Episode already completed
         if self._state.completed:
-            return self._get_observation(), 0.0, True, {
+            return self._get_observation(), 0.0, True, False, {
                 "metrics": {
                     "latency": 0.1,
                     "task_id": "completed",
@@ -77,7 +77,7 @@ class SentinelEnv:
             self._state.total_score = sum(self._state.scores) / len(self._task_sequence)
             info["metrics"]["status"] = "completed"
         
-        return self._get_observation(), reward, self._state.completed, info
+        return self._get_observation(), reward, self._state.completed, False, info
 
     def state(self) -> EnvState:
         return self._state

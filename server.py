@@ -28,11 +28,12 @@ def reset(opts: dict = None):
 
 @app.post("/step")
 def step(action: Action):
-    obs, reward, done, info = env.step(action)
+    obs, reward, terminated, truncated, info = env.step(action)
     return {
         "observation": obs,
         "reward": reward,
-        "done": done,
+        "terminated": terminated,
+        "truncated": truncated,
         "info": info
     }
 
