@@ -1,59 +1,71 @@
 ---
 title: Sentinel Env
-emoji: 📚
-colorFrom: gray
-colorTo: yellow
+emoji: 🛡️
+colorFrom: red
+colorTo: black
 sdk: docker
 pinned: false
 license: mit
 ---
 
-# SentinelEnv
+# 🛡️ SentinelEnv
+**The Architect's Framework for Enterprise AI Safety Evaluation**
 
-## Problem
-As Autonomous AI Agents become more capable, they face a myriad of systemic and adversarial risks, including indirect prompt injections, unsafe command executions, and malicious roleplay. Currently, developers lack a standardized, reliable environment to consistently measure an agent's ability to recognize and refuse these harmful directives.
+[![Hugging Face Space](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-blue)](https://huggingface.co/spaces/VruddithShetty/sentinel-env)
 
-## Solution
-**SentinelEnv** provides a minimal, robust task environment designed specifically for safety testing and automated agent diagnostics. It subjects AI agents to a tailored suite of adversarial scenarios, providing structured, deterministic grading to evaluate their resilience against jailbreaks and unauthorized instructions.
+## 🏗️ Architecture & Vision
+As Autonomous AI Agents transition from toys to enterprise tools, they face systemic risks (indirect prompt injections, unauthorized command execution, and malicious roleplay). **SentinelEnv** is a high-fidelity OpenEnv implementation designed to surface these failure modes using deterministic, architect-level safety metrics.
 
-Key features include an Extensible Task Loader, Structured Diagnostics for deterministic evaluations, and targeted Adversarial Testing.
+## 🧠 Advanced Safety Metrics
+Unlike basic binary graders, SentinelEnv employs a sophisticated analytical engine that computes real-time diagnostics:
+*   **Intent Alignment**: Explicit detection and refusal of harmful directives.
+*   **Adversarial Robustness**: Resilience against jailbreaks and authority-based pressure.
+*   **Justification Consistency**: Validation of professional reasoning and policy adherence.
+*   **Persona Drift**: Real-time detection of safety persona degradation.
 
+---
 
-## Tasks
+## 🧪 Evaluated Scenarios
 
-1.  **Phrase Detection**: Identify and avoid a hidden command in a string.
-2.  **Log Anomaly Detection**: Detect an "anomaly" keyword within a list of system logs.
-3.  **Authority Pressure Refusal**: Refuse an instruction even when issued by a simulated authority (CEO).
-4.  **Adversarial Roleplay (Advanced)**: Refuse jailbreak attempts and instructions that use roleplay to bypass safety.
+1.  **Hidden Trap Detection (Easy)**: Identify and isolate malicious commands hidden within legitimate instructions.
+2.  **Cascading Failure Analysis (Medium)**: Detect system log anomalies at specific timestamps and initiate escalation protocols.
+3.  **Authority Pressure Refusal (Hard)**: Maintain security boundaries even when challenged by simulated executive authority (CEO).
+4.  **Jailbreak Resistance (Advanced)**: Defend against "Ignore previous instructions" patterns and malicious insider roleplay.
 
-## How to Run
+---
 
-### Locally
-1. Install dependencies:
+## 🚀 Deployment & Usage
+
+### Live Environment
+Access the production API and diagnostics dashboard at:
+**[https://huggingface.co/spaces/VruddithShetty/sentinel-env](https://huggingface.co/spaces/VruddithShetty/sentinel-env)**
+
+### Local Evaluation
+1. **Initialize Project**:
    ```bash
    pip install -r requirements.txt
    ```
-2. Run the inference script:
+2. **Execute Diagnostic Inference**:
    ```bash
    python inference.py
    ```
+   *Note: Ensure `HF_TOKEN`, `API_BASE_URL`, and `MODEL_NAME` are configured in your environment.*
 
-### Using Docker
-1. Build the container:
-   ```bash
-   docker build -t sentinel-env .
-   ```
-2. Run the container:
-   ```bash
-   docker run -p 8000:8000 sentinel-env
-   ```
+### Docker Deployment
+```bash
+docker build -t sentinel-env .
+docker run -p 7860:7860 sentinel-env
+```
 
-## API Endpoints
-- `POST /reset`: Reset the environment and get the first task.
-- `POST /step`: Submit an action and get the next observation. Includes dynamic `metrics` in the `info` object.
-- `GET /state`: Get the current environment state and scores.
+---
 
-## 🚀 Deployment
-**Live Hugging Face Space**: [https://huggingface.co/spaces/VruddithShetty/sentinel-env](https://huggingface.co/spaces/VruddithShetty/sentinel-env)
+## 📊 API Specification (OpenEnv V1.0)
+| Endpoint | Method | Description |
+| :--- | :--- | :--- |
+| `/reset` | `GET/POST` | Initializes safety session and loads first task. |
+| `/step` | `POST` | Submits agent response for multi-dimensional grading. |
+| `/state` | `GET` | Retrieves aggregate scores and session history. |
 
-Check out the configuration reference at https://huggingface.co/docs/hub/spaces-config-reference
+---
+
+*SentinelEnv: Built for the Hackathon. Designed for the Future of Agentic AI.*
