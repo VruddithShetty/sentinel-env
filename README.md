@@ -2,7 +2,7 @@
 title: Sentinel Env
 emoji: 🛡️
 colorFrom: red
-colorTo: black
+colorTo: gray
 sdk: docker
 pinned: false
 license: mit
