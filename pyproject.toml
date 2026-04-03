@@ -1,12 +1,7 @@
-[build-system]
-requires = ["setuptools>=61.0"]
-build-backend = "setuptools.build_meta"
-
 [project]
 name = "sentinel-env"
-version = "1.1.0"
-description = "Minimal task environment with adversarial testing support"
-readme = "README.md"
+version = "1.0.0"
+description = "AI safety evaluation environment"
 requires-python = ">=3.10"
 dependencies = [
     "fastapi",
@@ -19,13 +14,12 @@ dependencies = [
 [project.scripts]
 server = "server.app:main"
 
-[project.optional-dependencies]
-test = [
-    "requests"
-]
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
-py-modules = ["env", "inference", "models", "test_api"]
+py-modules = ["env", "inference", "models"]
 packages = ["graders", "scenarios", "server"]
 
 [tool.setuptools.package-data]

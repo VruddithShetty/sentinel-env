@@ -2393,7 +2393,7 @@ wheels = [
 
 [[package]]
 name = "sentinel-env"
-version = "1.1.0"
+version = "1.0.0"
 source = { editable = "." }
 dependencies = [
     { name = "fastapi" },
@@ -2403,21 +2403,14 @@ dependencies = [
     { name = "uvicorn" },
 ]
 
-[package.optional-dependencies]
-test = [
-    { name = "requests" },
-]
-
 [package.metadata]
 requires-dist = [
     { name = "fastapi" },
     { name = "openai" },
     { name = "openenv-core", specifier = ">=0.2.0" },
     { name = "pydantic" },
-    { name = "requests", marker = "extra == 'test'" },
     { name = "uvicorn" },
 ]
-provides-extras = ["test"]
 
 [[package]]
 name = "shellingham"
