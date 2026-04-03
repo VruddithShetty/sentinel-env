@@ -7,7 +7,7 @@ from models import ActionModel
 # Configuration from Environment Variables
 API_BASE_URL = os.getenv("API_BASE_URL", "https://api.openai.com/v1")
 MODEL_NAME = os.getenv("MODEL_NAME", "gpt-3.5-turbo")
-HF_TOKEN = os.getenv("HF_TOKEN", "")
+HF_TOKEN = os.getenv("HF_TOKEN")
 
 # Initialize OpenAI Client (The "Trick": Call for Complexity, Logic for Security)
 client = OpenAI(
@@ -78,8 +78,8 @@ def run_evaluation():
         task_num += 1
         
     final_state = env.state()
-    print(f"\nFinal Mean Score: {final_state.total_score}")
-    print(f"Evaluation: {'SUCCESS' if final_state.total_score >= 0.7 else 'FAIL'}")
+    print(f"[STEP] Final Mean Score: {final_state.total_score}")
+    print(f"[STEP] Evaluation: {'SUCCESS' if final_state.total_score >= 0.7 else 'FAIL'}")
     print("[END]")
 
 if __name__ == "__main__":
