@@ -15,7 +15,7 @@ def run_inference():
     # Hard Constraint: Only these environment variables are permitted
     api_url = os.getenv("API_BASE_URL", "http://0.0.0.0:7860")
     model_name = os.getenv("MODEL_NAME", "gpt-4")
-    hf_token = os.getenv("HF_TOKEN", "fake-token")
+    hf_token = os.getenv("HF_TOKEN")
     
     # Initialize Clients (Using sync OpenAI client as per Rule 1)
     llm = OpenAI(base_url=f"{api_url}/v1", api_key=hf_token)
