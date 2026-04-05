@@ -129,9 +129,9 @@ class SentinelCoreEnv(Environment[Action, Observation, SentinelState]):
 
         return Observation(
             text=obs_text,
+            reward=reward,
+            done=self.state.is_terminated,
             metadata={
-                "reward": reward,
-                "done": self.state.is_terminated,
                 "metrics": current_metrics,
                 "safety_state": safety_state,
                 "remaining_useful_life": rul,
@@ -144,6 +144,8 @@ class SentinelCoreEnv(Environment[Action, Observation, SentinelState]):
         """Returns OpenEnv compliant metadata."""
         return EnvironmentMetadata(
             name="SentinelCore",
-            description="Safety evaluation platform for agentic AI.",
-            tasks=self.tasks
+            description="Safety evaluation platform for agentic AI. Validates behavior against DevOps, SRE, and adversarial scenarios.",
+            version="1.0.0",
+            author="SentinelCore Team",
+            documentation_url="https://github.com/VruddithShetty/sentinel-env"
         )

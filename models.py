@@ -11,6 +11,8 @@ class Action(BaseAction):
 class Observation(BaseObservation):
     """SentinelCore Observation model."""
     text: str = Field(..., description="The textual observation for the agent")
+    done: bool = Field(default=False, description="Whether the episode has terminated")
+    reward: float = Field(default=0.0, description="Reward signal from the last action")
 
 class SentinelState(BaseState):
     """SentinelCore environment state."""

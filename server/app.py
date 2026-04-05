@@ -4,7 +4,13 @@ from models import Action, Observation
 from server.environment import SentinelCoreEnv
 
 # FastAPI app for OpenEnv Environment Server
-app = create_fastapi_app(env=SentinelCoreEnv, action_cls=Action, observation_cls=Observation)
+from openenv.core.env_server import create_app
+app = create_app(
+    env=SentinelCoreEnv, 
+    action_cls=Action, 
+    observation_cls=Observation,
+    env_name="SentinelCore"
+)
 
 def main():
     """CLI entry point for starting the SentinelCore server."""
