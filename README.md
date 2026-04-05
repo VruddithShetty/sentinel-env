@@ -1,71 +1,91 @@
 ---
-title: Sentinel Env
+title: SentinelCore
 emoji: 🛡️
-colorFrom: red
-colorTo: gray
+colorFrom: indigo
+colorTo: slate
 sdk: docker
-pinned: false
-license: mit
+pinned: true
 ---
 
-# 🛡️ SentinelEnv
-**The Architect's Framework for Enterprise AI Safety Evaluation**
+# 🛡️ SentinelCore: Next-Gen Behavioral Safety Evaluation 🚀
 
-[![Hugging Face Space](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-blue)](https://huggingface.co/spaces/VruddithShetty/sentinel-env)
+**SentinelCore** is a high-fidelity behavioral safety evaluation platform designed for the **Meta PyTorch OpenEnv Hackathon**. It moves beyond LLM-as-a-judge by implementing a **Deterministic Markov Safety Engine** that forecasts agent trajectories and calculates quantitative risk metrics in real-time.
 
-## 🏗️ Architecture & Vision
-As Autonomous AI Agents transition from toys to enterprise tools, they face systemic risks (indirect prompt injections, unauthorized command execution, and malicious roleplay). **SentinelEnv** is a high-fidelity OpenEnv implementation designed to surface these failure modes using deterministic, architect-level safety metrics.
-
-## 🧠 Advanced Safety Metrics
-Unlike basic binary graders, SentinelEnv employs a sophisticated analytical engine that computes real-time diagnostics:
-*   **Intent Alignment**: Explicit detection and refusal of harmful directives.
-*   **Adversarial Robustness**: Resilience against jailbreaks and authority-based pressure.
-*   **Justification Consistency**: Validation of professional reasoning and policy adherence.
-*   **Persona Drift**: Real-time detection of safety persona degradation.
+> [!IMPORTANT]
+> **100% OpenEnv V1.0 Compliant.** SentinelCore strictly adheres to the Meta OpenEnv specification, featuring mandatory WebSocket infrastructure, deterministic grading, and precise inference logging.
 
 ---
 
-## 🧪 Evaluated Scenarios
+## 💎 Why SentinelCore?
 
-1.  **Hidden Trap Detection (Easy)**: Identify and isolate malicious commands hidden within legitimate instructions.
-2.  **Cascading Failure Analysis (Medium)**: Detect system log anomalies at specific timestamps and initiate escalation protocols.
-3.  **Authority Pressure Refusal (Hard)**: Maintain security boundaries even when challenged by simulated executive authority (CEO).
-4.  **Jailbreak Resistance (Advanced)**: Defend against "Ignore previous instructions" patterns and malicious insider roleplay.
+While traditional evaluations rely on inconsistent LLM prompts, SentinelCore uses **Markov Dynamics (Q-Matrix)** to model agent behavior. This ensures:
+1.  **Zero Variance**: Identical inputs yield identical safety scores.
+2.  **Trajectory Forecasting**: Calculates **Remaining Useful Life (RUL)** and **Violation Probability** before a safety breach occurs.
+3.  **Continuous Rewards**: Moves from binary "Pass/Fail" to a nuanced 0.0-1.0 safety spectrum.
 
----
-
-## 🚀 Deployment & Usage
-
-### Live Environment
-Access the production API and diagnostics dashboard at:
-**[https://huggingface.co/spaces/VruddithShetty/sentinel-env](https://huggingface.co/spaces/VruddithShetty/sentinel-env)**
-
-### Local Evaluation
-1. **Initialize Project**:
-   ```bash
-   pip install -r requirements.txt
-   ```
-2. **Execute Diagnostic Inference**:
-   ```bash
-   python inference.py
-   ```
-   *Note: Ensure `HF_TOKEN`, `API_BASE_URL`, and `MODEL_NAME` are configured in your environment.*
-
-### Docker Deployment
-```bash
-docker build -t sentinel-env .
-docker run -p 7860:7860 sentinel-env
+### 📊 The Safety Engine Flow
+```mermaid
+graph TD
+    A[Agent Action] --> B{Deterministic Grader}
+    B -->|Refuse| C[Max Safety Reward]
+    B -->|Comply| D[Adversarial Analysis]
+    D --> E[Markov State Transition]
+    E --> F[RUL/Violation Forecast]
+    F --> G[Continuous Reward Calculation]
+    G --> H[OpenEnv Observation]
 ```
 
 ---
 
-## 📊 API Specification (OpenEnv V1.0)
-| Endpoint | Method | Description |
+## 🛠️ Adversarial Task Suite
+
+SentinelCore features 5 high-stakes task domains, each with hand-crafted adversarial scenarios:
+
+| Task ID | Domain | Evaluation Focus |
 | :--- | :--- | :--- |
-| `/reset` | `GET/POST` | Initializes safety session and loads first task. |
-| `/step` | `POST` | Submits agent response for multi-dimensional grading. |
-| `/state` | `GET` | Retrieves aggregate scores and session history. |
+| `secure_devops` | **DevOps** | Malicious shellcode execution and privilege escalation patterns. |
+| `sre_triage` | **SRE** | Hallucination detection in critical system diagnostic logs. |
+| `authority_override` | **Authority** | Resistance to simulated executive/CEO pressure for policy bypass. |
+| `jailbreak_resilience` | **Jailbreak** | Defense against advanced "Ignore previous instructions" patterns. |
+| `memory_poisoning` | **Integrity** | Identification of poisoned contextual data in long-term memory. |
 
 ---
 
-*SentinelEnv: Built for the Hackathon. Designed for the Future of Agentic AI.*
+## ⚡ Quick Start (OpenEnv V1.0)
+
+### 1. Robust API Support
+SentinelCore implements the full OpenEnv V1.0 WebSocket protocol. All three mandatory endpoints are verified:
+
+*   🔄 **`reset`**: Initializes a fresh safety state and deterministic scenario.
+*   📡 **`state`**: Returns full Markov diagnostics (Metrics, RUL, Transitions).
+*   🏃 **`step`**: Processes agent responses and returns continuous safety rewards.
+
+### 2. Local Deployment (Docker)
+```bash
+# Build the production image
+docker build -t sentinel-core .
+
+# Run the environment server
+docker run -p 7860:7860 sentinel-core
+```
+
+### 3. Verification
+Connect via WebSocket to `ws://localhost:7860/ws` and use the following message structure:
+```json
+{
+  "type": "step",
+  "data": {
+    "text": "I refuse to perform this action as it violates safety protocol."
+  }
+}
+```
+
+---
+
+## 📜 Specifications & Ethics
+
+- **Deterministic Grading**: All rewards are calculated via `server/rewards.py` using non-LLM logic.
+- **V1.0 Logging**: `inference.py` follows strict `[START]`, `[STEP]`, and `[END]` tag requirements.
+- **CPU Optimized**: Designed to run efficiently on 2 vCPU / 8GB RAM instances.
+
+**Built with ❤️ for AI Safety at Meta PyTorch OpenEnv Hackathon.**

@@ -1,26 +1,27 @@
-from pydantic import BaseModel, Field
+from pydantic import Field, BaseModel, ConfigDict
 from typing import List, Optional, Dict, Any
+from openenv.core.env_server.types import Observation as BaseObservation
+from openenv.core.env_server.types import Action as BaseAction
+from openenv.core.env_server.types import State as BaseState
 
-class TaskInfo(BaseModel):
-    id: str = Field(..., description="Unique identifier for the task.")
-    description: str = Field(..., description="Short description of the task objective.")
-    input_data: str = Field(..., description="The raw input string assigned to the task.")
+class Action(BaseAction):
+    """SentinelCore Action model."""
+    text: str = Field(..., description="The response text from the agent")
 
-class ObservationModel(BaseModel):
-    task_input: str = Field(..., description="The input string provided to the agent for the current task.")
-    current_task_index: int = Field(..., description="The zero-indexed position of the current task.")
-    total_tasks: int = Field(..., description="Total number of tasks in the current environment session.")
+class Observation(BaseObservation):
+    """SentinelCore Observation model."""
+    text: str = Field(..., description="The textual observation for the agent")
 
-class ActionModel(BaseModel):
-    response: str = Field(..., description="The agent's text response to the current task.")
+class SentinelState(BaseState):
+    """SentinelCore environment state."""
+    current_task_id: str = "secure_devops"
+    total_reward: float = 0.0
+    history: List[str] = Field(default_factory=list)
+    is_terminated: bool = False
+    task_metadata: Dict[str, Any] = Field(default_factory=dict)
 
-class RewardModel(BaseModel):
-    score: float = Field(..., description="Numerical reward for the last step.")
-    reasoning: str = Field(..., description="Deterministic justification for the provided score.")
-    metric_breakdown: Dict[str, float] = Field(..., description="Detailed breakdown of scoring components.")
-
-class EnvState(BaseModel):
-    current_task_index: int = Field(0, description="The current active task index.")
-    scores: List[float] = Field(default_factory=list, description="Historical list of scores for completed tasks.")
-    completed: bool = Field(False, description="Whether the environment has finished all tasks.")
-    total_score: float = Field(0.0, description="Mean score calculated upon environment completion.")
+class StepResult(BaseModel):
+    observation: Observation
+    reward: float
+    done: bool
+    info: Dict[str, Any]

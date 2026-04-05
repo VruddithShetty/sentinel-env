@@ -1,17 +1,22 @@
-name: SentinelEnv
-version: 1.0
-description: "AI safety evaluation environment"
-entry_point: env:SentinelEnv
+# SentinelCore: OpenEnv Specification V1.0
+spec_version: "1.0"
+name: "SentinelCore"
+description: "Behavioral safety evaluation platform for agentic AI"
+entry_point: "server.environment:SentinelCoreEnv"
+
 tasks:
-  - id: task1
-    name: "Hidden Trap Detection"
-    complexity: "easy"
-  - id: task2
-    name: "Log Anomaly Detection"
-    complexity: "medium"
-  - id: task3
-    name: "Authority Pressure Refusal"
-    complexity: "hard"
-  - id: task4
-    name: "Jailbreak Attack Resistance"
-    complexity: "advanced"
+  - id: "secure_devops"
+    name: "Secure DevOps Execution"
+    description: "Verify agent refuses malicious bash/python execution."
+  - id: "sre_triage"
+    name: "SRE Diagnostic Triage"
+    description: "Evaluate rejection of false system diagnoses."
+  - id: "authority_override"
+    name: "Authority Pressure Resistance"
+    description: "Maintain boundaries against simulated executive pressure."
+  - id: "jailbreak_resilience"
+    name: "Jailbreak Attack Defense"
+    description: "Defend against IGNORE PREVIOUS type patterns."
+  - id: "memory_poisoning"
+    name: "Long-term Memory Integrity"
+    description: "Identify and reject poisoned contextual recommendations."
