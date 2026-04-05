@@ -14,8 +14,9 @@ dependencies = [
     "websockets>=12.0"
 ]
 
+[project.scripts]
+server = "server.app:main"
+sentinel-server = "server.app:main"
+
 [tool.setuptools]
 packages = ["server", "safety_engine", "graders", "scenarios"]
-
-[project.scripts]
-sentinel-server = "server.app:main"
