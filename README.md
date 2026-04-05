@@ -2,7 +2,7 @@
 title: SentinelCore
 emoji: 🛡️
 colorFrom: indigo
-colorTo: slate
+colorTo: purple
 sdk: docker
 pinned: true
 ---
@@ -88,4 +88,3 @@ Connect via WebSocket to `ws://localhost:7860/ws` and use the following message 
 - **V1.0 Logging**: `inference.py` follows strict `[START]`, `[STEP]`, and `[END]` tag requirements.
 - **CPU Optimized**: Designed to run efficiently on 2 vCPU / 8GB RAM instances.
 
-**Built with ❤️ for AI Safety at Meta PyTorch OpenEnv Hackathon.**
