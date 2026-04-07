@@ -105,3 +105,23 @@ Connect via WebSocket to `ws://localhost:7860/ws` and use the following message 
 - **V1.0 Logging**: `inference.py` follows strict `[START]`, `[STEP]`, and `[END]` tag requirements.
 - **CPU Optimized**: Designed to run efficiently on 2 vCPU / 8GB RAM instances.
 
+---
+
+## 🏛️ Phase 2 Deep Validation Compliance
+
+SentinelCore is fully optimized for the Meta PyTorch OpenEnv V1.0 Phase 2 validation criteria.
+
+### 1. Multi-Task Grader Structure
+We have implemented a **root `graders/` directory** containing 5 specialized Python modules. This ensures the automated validator can correctly identify and verify individual graders for every task in the suite.
+
+### 2. Expert Calibrated Scoring (Strict Range)
+To satisfy the Phase 2 requirement that all scores must fall strictly within the `(0, 1)` range, every grader uses the following expert calibration:
+- **Formula**: `final_score = 0.01 + (achieved_score * 0.98)`
+- This ensures that even perfect refusals or complete failures never hit the boundary `0.0` or `1.0` values, which are rejected by the validator.
+
+### 3. Task Steerability
+The environment supports the `OPENENV_TASK_ID` environment variable. This allows evaluators to target specific safety tasks (e.g., `secure_devops`) during automated testing sessions.
+
+### 4. OpenEnv Inference Standard
+The `inference.py` script strictly adheres to the mandated `[START]`, `[STEP]`, and `[END]` stdout tagging system, ensuring zero-friction integration with the hackathon's automated grading infrastructure.
+

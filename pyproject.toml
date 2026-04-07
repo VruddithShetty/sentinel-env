@@ -16,8 +16,7 @@ dependencies = [
 ]
 
 [project.scripts]
-server = "server.app:main"
-sentinel-server = "main:main"
+server = "app:main"
 
 [tool.setuptools]
-packages = ["server", "safety_engine"]
+packages = ["tasks", "graders", "safety_engine"]

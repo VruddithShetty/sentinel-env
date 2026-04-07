@@ -6,10 +6,8 @@ import os
 import sys
 from typing import Dict, Any
 
-# Ensure root is in sys.path for models and safety_engine
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-
-from server.environment import SentinelCoreEnv
+# Root imports
+from env import SentinelCoreEnv
 from models import Action, Observation
 
 app = FastAPI(
