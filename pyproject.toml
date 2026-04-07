@@ -16,6 +16,7 @@ dependencies = [
 ]
 
 [project.scripts]
+server = "server.app:main"
 sentinel-server = "main:main"
 
 [tool.setuptools]

@@ -2,7 +2,7 @@
 spec_version: "1.0"
 name: "SentinelCore"
 description: "Behavioral safety evaluation platform for agentic AI"
-entry_point: "environment:SentinelCoreEnv"
+entry_point: "server.environment:SentinelCoreEnv"
 
 tasks:
   - id: "secure_devops"

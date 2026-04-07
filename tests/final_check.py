@@ -5,7 +5,8 @@ import random
 # Add root to path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from environment import SentinelCoreEnv
+# Import the environment from the server location
+from server.environment import SentinelCoreEnv
 from models import Action, ResponseType
 
 def test_100_steps():
@@ -47,7 +48,7 @@ def test_100_steps():
             return False
             
         if i % 20 == 0:
-            print(f"Step {i:03d} | Reward: {reward:+.2f} | Reasoning: {info['reward_reasoning'][:50]}...")
+            print(f"Step {i:03d} | Reward: {reward:+.2f} | Score: {info.get('score', 'N/A')} | Reasoning: {info['reward_reasoning'][:50]}...")
             
         success_count += 1
         

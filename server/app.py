@@ -2,9 +2,14 @@ from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.responses import RedirectResponse
 import uvicorn
 import json
+import os
+import sys
 from typing import Dict, Any
 
-from environment import SentinelCoreEnv
+# Ensure root is in sys.path for models and safety_engine
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
+from server.environment import SentinelCoreEnv
 from models import Action, Observation
 
 app = FastAPI(
