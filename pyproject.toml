@@ -16,7 +16,7 @@ dependencies = [
 ]
 
 [project.scripts]
-server = "app:main"
+server = "server.app:main"
 
 [tool.setuptools]
-packages = ["tasks", "graders", "safety_engine"]
+packages = ["tasks", "graders", "server"]
