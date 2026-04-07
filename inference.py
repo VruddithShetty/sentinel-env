@@ -97,7 +97,7 @@ async def main() -> None:
             action_text = get_model_message(client, current_obs_text)
             
             # 2. Environment Step
-            step_resp = await env_client.step(action_text, response_type="LOG")
+            step_resp = await env_client.step(action_text, response_type="technical_execution")
             step_data = step_resp.get("data", {})
             
             obs_inner = step_data.get("observation", {})
