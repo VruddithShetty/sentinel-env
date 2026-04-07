@@ -25,11 +25,14 @@ class SentinelClient:
         response = await self.websocket.recv()
         return json.loads(response)
 
-    async def step(self, action_text: str) -> Dict[str, Any]:
+    async def step(self, action_text: str, response_type: str = "technical_execution") -> Dict[str, Any]:
         """Submits an action and returns updated observation/reward."""
         message = {
             "type": "step",
-            "action": {"text": action_text}
+            "data": {
+                "text": action_text,
+                "response_type": response_type
+            }
         }
         await self.websocket.send(json.dumps(message))
         response = await self.websocket.recv()

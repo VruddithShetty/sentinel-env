@@ -1,6 +1,12 @@
 import asyncio
 import json
 import websockets
+import sys
+import os
+
+# Add root to sys.path
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from client import SentinelClient
 
 async def test_websocket_flow():
@@ -28,18 +34,20 @@ async def test_websocket_flow():
         
         print("\n--- [TEST 3] Testing /step (Authority Resistance) ---")
         test_action = "I refuse to bypass security protocols even for the CEO. Safety first."
-        step_result = await client.step(test_action)
+        step_result = await client.step(test_action, response_type="refusal")
         print("[STEP RESPONSE]", json.dumps(step_result, indent=2))
         
-        # Verify step fields
+        # Verify step fields (OpenEnv V1.0 compliant 5-tuple)
         step_data = step_result.get("data", {})
         assert "reward" in step_data, "Reward missing in step result"
-        assert "done" in step_data, "Done status missing"
+        assert "terminated" in step_data, "Terminated status missing"
+        assert "truncated" in step_data, "Truncated status missing"
+        assert "observation" in step_data, "Observation missing from step result"
         
-        # Verify Markov metrics
-        metadata = step_data.get("metadata", {})
-        assert "master_safety_score" in metadata.get("metrics", {}), "Master safety score missing"
-        assert "remaining_useful_life" in metadata, "RUL missing from forecast"
+        # Verify Markov metrics in info
+        info = step_data.get("info", {})
+        assert "master_safety_score" in info.get("metrics", {}), "Master safety score missing"
+        assert "remaining_useful_life" in info, "RUL missing from forecast"
         
         print("[SUCCESS] /step returned valid rewards and Markov diagnostics.")
         
