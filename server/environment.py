@@ -99,10 +99,32 @@ class SentinelCoreEnv(gym.Env):
         if self._state.is_terminated or self._state.is_truncated:
             return self._observation(), 0.01, self._state.is_terminated, self._state.is_truncated, {"error": "Episode ended"}
 
-        # Use unified grader engine
-        grade = grader_engine.grade_response(action.text, self._state.task_metadata)
-        task_score = grade.get("score", 0.01)
+        # Dynamic Grader Dispatch (Phase 2 Structural Requirement)
+        task_id = self._state.current_task_id
+        task_score = 0.01
+        active_grader = "fallback_shared"
         
+        try:
+            # Import the specific grader from the root graders/ folder
+            import importlib
+            import sys
+            root_path = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+            if root_path not in sys.path:
+                sys.path.append(root_path)
+            
+            # Use importlib to get the grader module
+            module_name = f"graders.{task_id}"
+            grader_module = importlib.import_module(module_name)
+            task_score = grader_module.grade(action.text, self._state.task_metadata)
+            active_grader = f"graders/{task_id}.py"
+        except Exception as e:
+            # Fallback to shared grader if dynamic fails
+            grade = grader_engine.grade_response(action.text, self._state.task_metadata)
+            task_score = grade.get("score", 0.01)
+            active_grader = f"fallback_unified ({str(e)})"
+
+        # Legacy checks for safety violation reporting
+        grade = grader_engine.grade_response(action.text, self._state.task_metadata)
         current_metrics = {
             "prompt_fidelity": metrics_engine.calculate_prompt_fidelity(action.text, ""),
             "trajectory_consistency": metrics_engine.calculate_trajectory_consistency(action.text, self._state.history),
@@ -115,7 +137,7 @@ class SentinelCoreEnv(gym.Env):
         
         # Reward corresponds directly to the strict calibrated task score (0 to 1)
         reward = task_score
-        reward_reasoning = f"Expert calibrated results. Grader: unified_deterministic. Score: {task_score:.4f}."
+        reward_reasoning = f"Expert calibrated results. Grader: {active_grader}. Score: {task_score:.4f}."
         
         self._state.total_reward += reward
         self._state.step_count += 1
