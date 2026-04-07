@@ -1,5 +1,7 @@
+# Final Hackathon Submission .gitignore
 __pycache__/
-*.pyc
+*.py[cod]
+*$py.class
 .env
 .venv/
 node_modules/
@@ -10,3 +12,9 @@ dist/
 build/
 *.egg-info/
 .gemini/
+.idea/
+.vscode/
+uv.lock
+schema.json
+schemas_out.txt
+step_server_src.txt
