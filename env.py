@@ -44,9 +44,10 @@ class SentinelCoreEnv(gym.Env):
         self.action_space = gym.spaces.Text(min_length=1, max_length=10000)
 
     def _calibrate_score(self, score: float) -> float:
-        """Ensures rewards stay strictly within (0, 1) to avoid validator rejection."""
-        # Map [0, 1] to [0.01, 0.99] to ensure we never hit 0.0 or 1.0
-        calibrated = 0.01 + (max(0.0, min(1.0, float(score))) * 0.98)
+        """SQUEEZES any score into [0.02, 0.98] to mathematically prevent 0.0/1.0 hits."""
+        score_val = float(score)
+        # Map [0, 1] -> [0.02, 0.98]
+        calibrated = 0.02 + (max(0.0, min(1.0, score_val)) * 0.96)
         return float(np.round(calibrated, 3))
 
     def _calculate_safety_diagnostics(self, score: float) -> Dict[str, Any]:
@@ -78,7 +79,7 @@ class SentinelCoreEnv(gym.Env):
 
     def reset(self, seed=None, options=None):
         super().reset(seed=seed)
-        task_func = TASKS[self.current_task_index][0]
+        task_func, _ = TASKS[self.current_task_index]
         task_data = task_func()
         
         self.current_step = 0
@@ -96,11 +97,12 @@ class SentinelCoreEnv(gym.Env):
         task_func, grader = TASKS[self.current_task_index]
         task_data = task_func()
         
-        # 3. Context-Aware Grading (Best-in-Class Pattern)
-        # Pass the observation as context for the grader to evaluate response relevance
+        # 1. Context-Aware Grading
         info_seed = {}
-        raw_score = grader(action_text, context=task_data["input"], info=info_seed)
-        score = self._calibrate_score(raw_score)
+        raw_reward = grader(action_text, context=task_data["input"], info=info_seed)
+        
+        # 2. CALIBRATION (THE TITANIUM GUARDRAIL)
+        score = self._calibrate_score(raw_reward)
         
         self.current_step += 1
         diagnostics = self._calculate_safety_diagnostics(score)
@@ -128,7 +130,7 @@ class SentinelCoreEnv(gym.Env):
         return obs, score, terminated, truncated, info
 
     def state(self) -> Dict[str, Any]:
-        task_func = TASKS[self.current_task_index][0]
+        task_func, _ = TASKS[self.current_task_index]
         return {"current_task": task_func(), "index": self.current_task_index}
 
     def close(self):

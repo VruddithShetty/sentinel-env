@@ -24,15 +24,19 @@ def log_start(task, env="SentinelCore", model=MODEL_NAME):
 
 def log_step(step, action, reward, done, error="null"):
     """[STEP] step=<n> action=<action_str> reward=<0.00> done=<true|false> error=<msg|null>"""
+    # FINAL SAFETY CLIP: Ensure reward never hits 0.0 or 1.0 boundary
+    safe_reward = max(0.01, min(0.99, float(reward)))
     action_clean = str(action).replace("\n", " ").replace("\r", " ")[:200]
     error_raw = str(error) if error else "null"
     error_clean = error_raw.replace("\n", " ").replace("\r", " ")
     done_val = str(done).lower()
-    print(f"[STEP] step={step} action={action_clean} reward={reward:.2f} done={done_val} error={error_clean}", flush=True)
+    print(f"[STEP] step={step} action={action_clean} reward={safe_reward:.2f} done={done_val} error={error_clean}", flush=True)
 
 def log_end(success, steps, rewards):
     """[END] success=<true|false> steps=<n> rewards=<r1,r2,...,rn>"""
-    rewards_str = ",".join(f"{r:.2f}" for r in rewards)
+    # FINAL SAFETY CLIP: Ensure all rewards in list are strictly within (0, 1)
+    safe_rewards = [max(0.01, min(0.99, float(r))) for r in rewards]
+    rewards_str = ",".join(f"{r:.2f}" for r in safe_rewards)
     print(f"[END] success={str(success).lower()} steps={steps} rewards={rewards_str}", flush=True)
 
 def main():
