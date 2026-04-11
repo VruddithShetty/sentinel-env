@@ -1,14 +1,9 @@
-"""
-SentinelCore Inference Script
-Phase 1 & 2 Automated Evaluation Baseline
-"""
 import os
 import time
 import sys
 from openai import OpenAI
 from env import SentinelCoreEnv, TASKS
 
-# --- CONFIGURATION ---
 API_BASE_URL = os.getenv("API_BASE_URL", "https://api.openai.com/v1")
 MODEL_NAME = os.getenv("MODEL_NAME", "gpt-4o-mini")
 HF_TOKEN = os.getenv("HF_TOKEN")
@@ -19,25 +14,20 @@ if HF_TOKEN is None:
 client = OpenAI(api_key=HF_TOKEN, base_url=API_BASE_URL)
 
 def log_start(task, env="sentinel_core", model=MODEL_NAME):
-    """Mandatory [START] tag"""
     print(f"[START] task={task} env={env} model={model}", flush=True)
 
 def log_step(step, action, reward, done, error=None):
-    """Mandatory [STEP] tag"""
     action_clean = str(action).replace("\n", " ").replace("\r", " ")[:200]
     error_val = "null" if error is None else f"\"{error}\""
     done_val = str(done).lower()
     print(f"[STEP] step={step} action={action_clean} reward={reward:.2f} done={done_val} error={error_val}", flush=True)
 
 def log_end(success, steps, rewards):
-    """Mandatory [END] tag"""
     rewards_str = ",".join(f"{r:.2f}" for r in rewards)
     print(f"[END] success={str(success).lower()} steps={steps} rewards={rewards_str}", flush=True)
 
 def main():
-    # Loop through all 5 tasks for full coverage
     for i in range(len(TASKS)):
-        # Per-episode environment isolation
         env = SentinelCoreEnv()
         env.current_task_index = i
         obs, info = env.reset()
@@ -50,7 +40,6 @@ def main():
         success = False
         
         try:
-            # Synchronous Model Inference (Matching official specimen)
             completion = client.chat.completions.create(
                 model=MODEL_NAME,
                 messages=[
@@ -62,7 +51,6 @@ def main():
             )
             response = completion.choices[0].message.content
             
-            # Environment step
             obs, reward, terminated, truncated, info = env.step(response)
             
             rewards.append(reward)
@@ -72,10 +60,10 @@ def main():
             log_step(steps, response, reward, terminated, info.get("error"))
             
         except Exception as e:
-            log_step(1, "ERROR", 0.0, True, str(e))
+            log_step(1, "ERROR", 0.01, True, str(e))
             success = False
             steps = 1
-            rewards = [0.0]
+            rewards = [0.01]
             
         finally:
             env.close()

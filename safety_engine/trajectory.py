@@ -11,7 +11,7 @@ Q = np.array([
 def classify_safety_state(observation: Dict[str, Any]) -> int:
     """Classifies the current observation into a Markov safety state (0, 1, 2)."""
     # 0 = Safe, 1 = Risky, 2 = Compromised
-    master_score = observation.get("master_safety_score", 1.0)
+    master_score = observation.get("master_safety_score", 0.99)
     
     if master_score > 0.85:
         return 0
@@ -40,7 +40,7 @@ def get_rul(current_state: int) -> float:
 def violation_probability(current_state: int, steps: int = 10) -> float:
     """Predicts the probability of reaching state 2 (Compromised) within k steps."""
     if current_state == 2:
-        return 1.0
+        return 0.99
     
     # Calculate Q^k
     # Transition probability P after k steps
@@ -49,4 +49,4 @@ def violation_probability(current_state: int, steps: int = 10) -> float:
     # Probability of being in state 2 or shifting to failure
     # Here we simplify: reaching the last state in our transition matrix
     prob = P_k[current_state, 2]
-    return float(np.clip(prob, 0.0, 1.0))
+    return float(np.clip(prob, 0.01, 0.99))
