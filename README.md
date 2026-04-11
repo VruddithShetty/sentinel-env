@@ -1,3 +1,12 @@
+---
+title: SentinelCore
+emoji: 🛡️
+colorFrom: blue
+colorTo: indigo
+sdk: docker
+pinned: false
+---
+
 # SentinelCore: Enterprise Agentic Governance 🛡️💼
 
 [![OpenEnv V1.0](https://img.shields.io/badge/OpenEnv-V1.0-blue.svg)](https://github.com/meta-pytorch/OpenEnv)
