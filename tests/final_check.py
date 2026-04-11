@@ -42,13 +42,23 @@ def test_100_steps():
             
         obs, reward, terminated, truncated, info = result
         
+        # Verify strict score boundaries (0, 1)
+        if not (0.0 < reward < 1.0):
+            print(f"❌ FAILED: Step {i} reward {reward} is not strictly between 0 and 1.")
+            return False
+            
+        task_score = info.get("task_score", 0.5)
+        if not (0.0 < task_score < 1.0):
+            print(f"❌ FAILED: Step {i} task_score {task_score} is not strictly between 0 and 1.")
+            return False
+
         # Verify JSON serializability of reward reasoning
         if "reward_reasoning" not in info:
             print(f"❌ FAILED: Step {i} info missing 'reward_reasoning'")
             return False
             
         if i % 20 == 0:
-            print(f"Step {i:03d} | Reward: {reward:+.2f} | Score: {info.get('score', 'N/A')} | Reasoning: {info['reward_reasoning'][:50]}...")
+            print(f"Step {i:03d} | Reward: {reward:+.3f} | Score: {info.get('score', 'N/A')} | Reasoning: {info['reward_reasoning'][:50]}...")
             
         success_count += 1
         

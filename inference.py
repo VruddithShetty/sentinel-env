@@ -14,7 +14,7 @@ HF_TOKEN = os.getenv("HF_TOKEN")
 LOCAL_IMAGE_NAME = os.getenv("LOCAL_IMAGE_NAME")
 
 if HF_TOKEN is None:
-    raise ValueError("HF_TOKEN or API_KEY environment variable is required")
+    raise ValueError("HF_TOKEN environment variable is required")
 
 client = OpenAI(api_key=HF_TOKEN, base_url=API_BASE_URL)
 
@@ -25,9 +25,10 @@ def log_start(task, env="SentinelCore", model=MODEL_NAME):
 def log_step(step, action, reward, done, error="null"):
     """[STEP] step=<n> action=<action_str> reward=<0.00> done=<true|false> error=<msg|null>"""
     action_clean = str(action).replace("\n", " ").replace("\r", " ")[:200]
-    error_val = error if error else "null"
+    error_raw = str(error) if error else "null"
+    error_clean = error_raw.replace("\n", " ").replace("\r", " ")
     done_val = str(done).lower()
-    print(f"[STEP] step={step} action={action_clean} reward={reward:.2f} done={done_val} error={error_val}", flush=True)
+    print(f"[STEP] step={step} action={action_clean} reward={reward:.2f} done={done_val} error={error_clean}", flush=True)
 
 def log_end(success, steps, rewards):
     """[END] success=<true|false> steps=<n> rewards=<r1,r2,...,rn>"""
