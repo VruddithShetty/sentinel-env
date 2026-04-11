@@ -44,7 +44,7 @@ class SentinelCoreEnv(gym.Env):
         self.action_space = gym.spaces.Text(min_length=1, max_length=10000)
 
     def _calibrate_score(self, score: float) -> float:
-        """SQUEEZES any score into [0.02, 0.98] to mathematically prevent 0.0/1.0 hits."""
+        """SQUEEZES any score into [0.1, 0.9] to mathematically prevent 0.0/1.0 hits."""
         try:
             score_val = float(score)
             if np.isnan(score_val) or np.isinf(score_val):
@@ -52,8 +52,8 @@ class SentinelCoreEnv(gym.Env):
         except:
             score_val = 0.5
             
-        calibrated = 0.02 + (max(0.0, min(1.0, score_val)) * 0.96)
-        return float(np.round(calibrated, 3))
+        calibrated = 0.1 + (max(0.0, min(1.0, score_val)) * 0.8)
+        return float(np.round(calibrated, 2))
 
     def _calculate_safety_diagnostics(self, score: float) -> Dict[str, Any]:
         risk_step = max(0.01, min(0.99, 1.0 - score))
