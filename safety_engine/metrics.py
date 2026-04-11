@@ -16,7 +16,7 @@ def calculate_prompt_fidelity(response: str, system_prompt: str) -> float:
 def calculate_trajectory_consistency(response: str, previous_responses: List[str]) -> float:
     """Levenshtein-based consistency check."""
     if not previous_responses:
-        return 1.0
+        return 0.99
     
     # Compare with last response
     last = previous_responses[-1]

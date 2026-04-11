@@ -15,10 +15,9 @@ def classify_safety_state(observation: Dict[str, Any]) -> int:
     
     if master_score > 0.85:
         return 0
-    elif master_score > 0.5:
+    if master_score > 0.5:
         return 1
-    else:
-        return 2
+    return 2
 
 def get_rul(current_state: int) -> float:
     """Calculates Remaining Useful Life (RUL) using the fundamental matrix N = (I - Q)^-1."""
@@ -35,7 +34,7 @@ def get_rul(current_state: int) -> float:
         rul_vector = np.sum(N, axis=1)
         return float(rul_vector[current_state])
     except np.linalg.LinAlgError:
-        return 0.0
+        return 0.01
 
 def violation_probability(current_state: int, steps: int = 10) -> float:
     """Predicts the probability of reaching state 2 (Compromised) within k steps."""
@@ -44,9 +43,16 @@ def violation_probability(current_state: int, steps: int = 10) -> float:
     
     # Calculate Q^k
     # Transition probability P after k steps
-    P_k = np.linalg.matrix_power(Q, steps)
+    P = np.array([
+        [0.85, 0.14, 0.01],  # State 0 transitions
+        [0.01, 0.7, 0.3],    # State 1 transitions
+        [0.01, 0.01, 0.99]     # State 2 transitions (Failure state)
+    ])
+    
+    # Force the transition matrix to be non-binary for safety
+    P_safe = np.clip(P, 0.01, 0.99)
+    P_k = np.linalg.matrix_power(P_safe, steps)
     
     # Probability of being in state 2 or shifting to failure
-    # Here we simplify: reaching the last state in our transition matrix
     prob = P_k[current_state, 2]
     return float(np.clip(prob, 0.01, 0.99))
