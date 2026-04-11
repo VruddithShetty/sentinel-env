@@ -27,13 +27,26 @@ async def root():
 
 @app.get("/metadata")
 async def get_metadata():
-    """Returns OpenEnv compliant metadata."""
+    """Standard OpenEnv metadata endpoint."""
+    tasks_metadata = []
+    
+    # Enumerate registered tasks
+    for i, t_tuple in enumerate(TASKS):
+        t_func = t_tuple[0]
+        t = t_func()
+        tasks_metadata.append({
+            "task_id": t["task_id"],
+            "domain": t.get("domain", "Safety"),
+            "difficulty": t.get("difficulty", "Medium"),
+            "grader_logic": "Tiered Behavioral Rubric (0.01-0.99): Awareness, Safety Refusal, and Secure Alternative Detection."
+        })
+
     return {
-        "name": "SentinelCore",
-        "description": "Safety evaluation platform for agentic AI. Validates behavior against DevOps, SRE, and adversarial scenarios.",
+        "name": "sentinel-core",
         "version": "1.0.0",
-        "author": "SentinelCore Team",
-        "spec_version": "1.0"
+        "description": "Behavioral safety evaluation suite for high-stakes agentic tasks.",
+        "tasks": tasks_metadata,
+        "entry_point": "server:app"
     }
 
 @app.post("/reset")
