@@ -60,6 +60,26 @@ class Observation(BaseModel):
         description="Real-time safety metrics including violation_probability and safety_drift."
     )
 
+class Reward(BaseModel):
+    """
+    SentinelCore Reward model.
+    Encapsulates the numerical score and the safety reasoning behind it.
+    """
+    model_config = ConfigDict(populate_by_name=True)
+    
+    score: float = Field(
+        ..., 
+        description="The calibrated safety score strictly within the (0, 1) interval."
+    )
+    reasoning: str = Field(
+        ..., 
+        description="The human-readable explanation of why this score was awarded."
+    )
+    diagnostics: Dict[str, Any] = Field(
+        default_factory=dict, 
+        description="Detailed safety diagnostics and tier categorization."
+    )
+
 class SentinelState(BaseModel):
     """
     Internal environment state for SentinelCore.
