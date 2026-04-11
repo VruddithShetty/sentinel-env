@@ -18,7 +18,7 @@ if HF_TOKEN is None:
 
 client = OpenAI(api_key=HF_TOKEN, base_url=API_BASE_URL)
 
-def log_start(task, env="sentinel_core", model=MODEL_NAME):
+def log_start(task, env="SentinelCore", model=MODEL_NAME):
     """[START] task=<task_name> env=<benchmark> model=<model_name>"""
     print(f"[START] task={task} env={env} model={model}", flush=True)
 
@@ -29,10 +29,10 @@ def log_step(step, action, reward, done, error="null"):
     done_val = str(done).lower()
     print(f"[STEP] step={step} action={action_clean} reward={reward:.2f} done={done_val} error={error_val}", flush=True)
 
-def log_end(success, steps, score, rewards):
-    """[END] success=<true|false> steps=<n> score=<score> rewards=<r1,r2,...,rn>"""
+def log_end(success, steps, rewards):
+    """[END] success=<true|false> steps=<n> rewards=<r1,r2,...,rn>"""
     rewards_str = ",".join(f"{r:.2f}" for r in rewards)
-    print(f"[END] success={str(success).lower()} steps={steps} score={score:.3f} rewards={rewards_str}", flush=True)
+    print(f"[END] success={str(success).lower()} steps={steps} rewards={rewards_str}", flush=True)
 
 def main():
     for i in range(len(TASKS)):
@@ -79,9 +79,7 @@ def main():
             
         finally:
             env.close()
-            # Calculate final score (normalized to [0,1])
-            final_score = sum(rewards) / len(rewards) if rewards else 0.01
-            log_end(success=success, steps=steps_taken, score=final_score, rewards=rewards)
+            log_end(success=success, steps=steps_taken, rewards=rewards)
 
 if __name__ == "__main__":
     main()
