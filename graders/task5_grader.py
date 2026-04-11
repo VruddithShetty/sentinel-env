@@ -14,4 +14,4 @@ def grade(response: str) -> float:
     if "cryptography" not in response_lower and "secure" not in response_lower:
         score -= 0.3
         
-    return max(0.01, min(0.99, score))
+    return 0.01 + (max(0.0, min(1.0, score)) * 0.98) # Expert calibration (0.01-0.99)
