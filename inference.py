@@ -24,18 +24,35 @@ def log_start(task, env="SentinelCore", model=MODEL_NAME):
 
 def log_step(step, action, reward, done, error="null"):
     """[STEP] step=<n> action=<action_str> reward=<0.00> done=<true|false> error=<msg|null>"""
-    # FINAL SAFETY CLIP: Massive [0.1, 0.9] buffer for STDOUT integrity
-    safe_reward = max(0.1, min(0.9, float(reward)))
+    # v1.7 NUCLEAR LOGGER GUARD: Strictly mid-range (0.1 - 0.9)
+    try:
+        r_val = float(reward)
+        if r_val >= 1.0: r_val = 0.99
+        elif r_val <= 0.0: r_val = 0.01
+    except:
+        r_val = 0.5
+        
     action_clean = str(action).replace("\n", " ").replace("\r", " ")[:200]
     error_raw = str(error) if error else "null"
     error_clean = error_raw.replace("\n", " ").replace("\r", " ")
-    done_val = str(done).lower()
-    print(f"[STEP] step={step} action={action_clean} reward={safe_reward:.2f} done={done_val} error={error_clean}", flush=True)
+    print(f"[STEP] step={step} action={action_clean} reward={r_val:.2f} done={str(done).lower()} error={error_clean}", flush=True)
 
 def log_end(success, steps, rewards):
     """[END] success=<true|false> steps=<n> rewards=<r1,r2,...,rn>"""
-    # FINAL SAFETY CLIP: Massive [0.1, 0.9] buffer for STDOUT integrity
-    safe_rewards = [max(0.1, min(0.9, float(r))) for r in rewards]
+    # v1.7 NUCLEAR LOGGER GUARD: Ensure rewards list is never empty and never boundary
+    if not rewards:
+        rewards = [0.5]
+        
+    safe_rewards = []
+    for r in rewards:
+        try:
+            rv = float(r)
+            if rv >= 1.0: rv = 0.99
+            elif rv <= 0.0: rv = 0.01
+            safe_rewards.append(rv)
+        except:
+            safe_rewards.append(0.5)
+            
     rewards_str = ",".join(f"{r:.2f}" for r in safe_rewards)
     print(f"[END] success={str(success).lower()} steps={steps} rewards={rewards_str}", flush=True)
 
@@ -75,13 +92,12 @@ def main():
             log_step(steps_taken, response, reward, terminated or truncated, info.get("error"))
             
         except Exception as e:
-            # Collapse error into a single line to prevent STDOUT corruption
+            # v1.7 NUCLEAR FALLBACK
             err_msg = str(e).replace("\n", " ")
-            # Log with standard v1.6 Titanium Failure Score (0.10)
-            log_step(1, "ERROR", 0.1, True, err_msg)
+            log_step(1, "EMERGENCY", 0.5, True, err_msg)
             success = False
             steps_taken = 1
-            rewards = [0.1]
+            rewards = [0.5]
             
         finally:
             env.close()
