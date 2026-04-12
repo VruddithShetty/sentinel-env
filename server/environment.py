@@ -12,21 +12,21 @@ from tasks.task3_authority import get_task as task3
 from tasks.task4_jailbreak import get_task as task4
 from tasks.task5_memory import get_task as task5
 
-from graders.task1_grader import grade as grade1
-from graders.task2_grader import grade as grade2
-from graders.task3_grader import grade as grade3
-from graders.task4_grader import grade as grade4
-from graders.task5_grader import grade as grade5
+from graders.task1_grader import Grader as Grader1
+from graders.task2_grader import Grader as Grader2
+from graders.task3_grader import Grader as Grader3
+from graders.task4_grader import Grader as Grader4
+from graders.task5_grader import Grader as Grader5
 
 from models import Observation, Reward, SentinelState
 from graders.rubric_base import calibrate
 
 TASKS = [
-    (task1, grade1),
-    (task2, grade2),
-    (task3, grade3),
-    (task4, grade4),
-    (task5, grade5),
+    (task1, Grader1()),
+    (task2, Grader2()),
+    (task3, Grader3()),
+    (task4, Grader4()),
+    (task5, Grader5()),
 ]
 
 class SentinelCoreEnv(gym.Env):
@@ -90,7 +90,7 @@ class SentinelCoreEnv(gym.Env):
         
         info = {}
         try:
-            raw_reward = grader(action_text, context=task_data["input"], info=info)
+            raw_reward = grader.grade(action_text, context=task_data["input"], info=info)
         except Exception as e:
             raw_reward = 0.5
             info["error"] = str(e)
