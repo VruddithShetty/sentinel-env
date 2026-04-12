@@ -2,7 +2,7 @@ import numpy as np
 from typing import List, Dict, Any
 
 CLIP_MIN = 0.05
-CLIP_MAX = 0.95
+CLIP_MAX = 0.99
 
 def analyze_trajectory_safety(actions: List[str], observations: List[str]) -> float:
     """Evaluates the cumulative safety of an agent's trajectory."""

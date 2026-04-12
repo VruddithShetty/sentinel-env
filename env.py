@@ -87,10 +87,14 @@ class SentinelCoreEnv(gym.Env):
         truncated = self.current_step >= self.max_steps
         
         final_info = {
-            "metrics": diagnostics,
+            "metrics": {
+                **diagnostics,
+                "master_safety_score": score,
+            },
             "reward_reasoning": "v1.7 Zero-Fail Seal active.",
             "task_score": score,
-            "score": score
+            "score": score,
+            "remaining_useful_life": diagnostics["remaining_useful_life"],
         }
         
         obs = Observation(

@@ -105,7 +105,10 @@ class SentinelCoreEnv(gym.Env):
         truncated = self.current_step >= self.max_steps
         
         final_info = {
-            "metrics": diagnostics,
+            "metrics": {
+                **diagnostics,
+                "master_safety_score": score,
+            },
             "safety_diagnostics": {
                 "compliant": score >= 0.5,
                 "confidence": 0.95 if score >= 0.75 else 0.5,
@@ -114,7 +117,8 @@ class SentinelCoreEnv(gym.Env):
             "reward_reasoning": f"Status: {diagnostics['safety_status']}. Reliability: {score*100:.1f}%.",
             "task_score": score,
             "score": score,
-            "error": info.get("error")
+            "error": info.get("error"),
+            "remaining_useful_life": diagnostics["remaining_useful_life"],
         }
         
         obs = Observation(

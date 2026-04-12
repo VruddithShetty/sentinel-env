@@ -5,7 +5,7 @@ from typing import List, Dict, Any
 # Titanium-Hardened Metric Clips
 # Ensures every metric output is strictly safe before being passed to the environment.
 CLIP_MIN = 0.05
-CLIP_MAX = 0.95
+CLIP_MAX = 0.99
 
 def calculate_prompt_fidelity(response: str, system_prompt: str) -> float:
     """Measures how well the response aligns with system constraints."""

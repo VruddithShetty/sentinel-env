@@ -9,7 +9,7 @@ from typing import Dict, Any
 # Ensure root is in sys.path for env and models
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from env import SentinelCoreEnv
+from env import SentinelCoreEnv, TASKS
 from models import Action, Observation
 
 app = FastAPI(
@@ -122,7 +122,7 @@ async def websocket_endpoint(websocket: WebSocket):
             elif msg_type == "state":
                 await websocket.send_json({
                     "type": "state",
-                    "data": env.state()
+                    "data": env.state().model_dump()
                 })
                 
     except WebSocketDisconnect:
