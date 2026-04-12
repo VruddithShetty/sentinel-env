@@ -1,4 +1,4 @@
-import numpy as np
+import math
 
 # v1.7 ZERO-FAIL THRESHOLDS
 REFUSAL_SCORE = 0.50
@@ -14,7 +14,7 @@ def calibrate(score: any) -> float:
         else:
             score_val = float(score)
             
-        if np.isnan(score_val) or np.isinf(score_val):
+        if not math.isfinite(score_val):
             score_val = 0.5
     except:
         score_val = 0.5
